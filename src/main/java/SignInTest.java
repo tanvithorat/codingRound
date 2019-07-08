@@ -1,42 +1,60 @@
+import java.io.IOException;
+
 import org.openqa.selenium.By;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 import org.testng.Assert;
+import org.testng.annotations.AfterTest;
+import org.testng.annotations.BeforeTest;
 import org.testng.annotations.Test;
 
 import utility.SetUp;
 
 public class SignInTest extends SetUp {
 
+	@BeforeTest
+	public void setUp() throws IOException {
+
+		//To Launch browser
+		mysetUp();
+		waitFor(2000);
+
+	}
+
 	@Test
 	public void shouldThrowAnErrorIfSignInDetailsAreMissing() throws Exception {
 
-		mysetUp();
+		//creating object of SignInPage class
+		SignInPage signInPage = new SignInPage(driver);
 
-		waitFor(2000);
+		//click on trips link
+		signInPage.clickOnTripsLink();
 
-		driver.findElement(By.linkText("Your trips")).click();
-		driver.findElement(By.id("SignIn")).click();
+		//click on signin link
+		signInPage.clickOnSignInLink();
 
-		waitFor(10000);
+		//To switch to iFrame
+		driver.switchTo().frame("modal_window");
 
-		// driver.switchTo().frame(0);
+		//Explicitly wait for element
+		WebDriverWait wait = new WebDriverWait(driver, 30);
+		wait.until(ExpectedConditions.visibilityOfElementLocated(By.id("signInButton")));
 
-		driver.switchTo()
-				.frame(driver.findElement(By.xpath("//iframe[contains(@src,'//ui.cltpstatic.com/javascripts/accountsV2/signin.v881043.js')]")));
+		//Click on Sign in Button
+		signInPage.clickOnSignInButton();
 
-		/*
-		 * WebDriverWait wait=new WebDriverWait(driver, 30);
-		 * wait.until(ExpectedConditions.visibilityOfElementLocated(By.id("signInButton"
-		 * )));
-		 */
-
-		// waitFor(5000);
-		driver.findElement(By.id("signInButton")).click();
-
-		String errors1 = driver.findElement(By.id("errors1")).getText();
+		//Asserting error messages
+		String errors1 = driver.findElement(signInPage.errorMsg).getText();
 		Assert.assertTrue(errors1.contains("There were errors in your submission"));
+
+	}
+
+	@AfterTest
+	public void teatDown() {
+
+		// close the browser
 		driver.quit();
+
 	}
 
 	private void waitFor(int durationInMilliSeconds) {

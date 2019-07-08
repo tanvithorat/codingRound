@@ -11,8 +11,8 @@ public class HotelBookingTest extends SetUp {
 	@BeforeTest
 	public void setUp() throws IOException {
 
+		//To Launch browser
 		mysetUp();
-
 		waitFor(2000);
 
 	}
@@ -20,12 +20,16 @@ public class HotelBookingTest extends SetUp {
 	@Test
 	public void shouldBeAbleToSearchForHotels() throws IOException {
 
+		//creating object of HotelBookingPage class
 		HotelBookingPage obj = new HotelBookingPage(driver);
 
+		//click on Hotels link
 		obj.clickOnHotelsLink();
 
+		//To select Locality
 		obj.selectLocality();
 
+		//to search
 		obj.clickOnSearch();
 
 	}

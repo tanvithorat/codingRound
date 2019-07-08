@@ -14,9 +14,9 @@ public class FlightBookingTest extends SetUp {
 
 	@BeforeTest
 	public void setUp() throws IOException {
-
+      
+		//To launch browser
 		mysetUp();
-
 		waitFor(2000);
 
 	}
@@ -24,9 +24,13 @@ public class FlightBookingTest extends SetUp {
 	@Test
 	public void testThatResultsAppearForAOneWayJourney() throws Exception {
 
+		//creating object of FlightBookingPage class
 		FlightBookingPage flightBookingPage = new FlightBookingPage(driver);
 
+		//click on one way option
 		flightBookingPage.selectOneWay();
+		
+		//select from city
 		flightBookingPage.selectFromCity();
 
 		// wait for the auto complete options to appear for the origin
@@ -34,6 +38,7 @@ public class FlightBookingTest extends SetUp {
 
 		driver.findElement(flightBookingPage.fromField).sendKeys(Keys.ENTER);
 
+		//Select to city
 		flightBookingPage.selectToCity();
 
 		// wait for the auto complete options to appear for the destination

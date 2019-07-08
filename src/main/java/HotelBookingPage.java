@@ -9,7 +9,7 @@ public class HotelBookingPage {
 
 	WebDriver driver;
 
-	@FindBy(xpath = "//a[contains(@title,\"Find hotels in destinations around the world\")]")
+	@FindBy(linkText = "Hotels")
 	private WebElement hotelLink;
 
 	@FindBy(id = "Tags")
@@ -24,8 +24,6 @@ public class HotelBookingPage {
 	public HotelBookingPage(WebDriver driver) {
 
 		this.driver = driver;
-
-		// This initElements method will create all WebElements
 
 		PageFactory.initElements(driver, this);
 
