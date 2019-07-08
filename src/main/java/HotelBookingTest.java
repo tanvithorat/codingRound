@@ -1,53 +1,49 @@
-import com.sun.javafx.PlatformUtil;
-import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.WebElement;
-import org.openqa.selenium.chrome.ChromeDriver;
-import org.openqa.selenium.support.FindBy;
-import org.openqa.selenium.support.ui.Select;
+import java.io.IOException;
+
+import org.testng.annotations.AfterTest;
+import org.testng.annotations.BeforeTest;
 import org.testng.annotations.Test;
 
-public class HotelBookingTest {
+import utility.SetUp;
 
-    WebDriver driver = new ChromeDriver();
+public class HotelBookingTest extends SetUp {
 
-    @FindBy(linkText = "Hotels")
-    private WebElement hotelLink;
+	@BeforeTest
+	public void setUp() throws IOException {
 
-    @FindBy(id = "Tags")
-    private WebElement localityTextBox;
+		mysetUp();
 
-    @FindBy(id = "SearchHotelsButton")
-    private WebElement searchButton;
+		waitFor(2000);
 
-    @FindBy(id = "travellersOnhome")
-    private WebElement travellerSelection;
+	}
 
-    @Test
-    public void shouldBeAbleToSearchForHotels() {
-        setDriverPath();
+	@Test
+	public void shouldBeAbleToSearchForHotels() throws IOException {
 
-        driver.get("https://www.cleartrip.com/");
-        hotelLink.click();
+		HotelBookingPage obj = new HotelBookingPage(driver);
 
-        localityTextBox.sendKeys("Indiranagar, Bangalore");
+		obj.clickOnHotelsLink();
 
-        new Select(travellerSelection).selectByVisibleText("1 room, 2 adults");
-        searchButton.click();
+		obj.selectLocality();
 
-        driver.quit();
+		obj.clickOnSearch();
 
-    }
+	}
 
-    private void setDriverPath() {
-        if (PlatformUtil.isMac()) {
-            System.setProperty("webdriver.chrome.driver", "chromedriver");
-        }
-        if (PlatformUtil.isWindows()) {
-            System.setProperty("webdriver.chrome.driver", "chromedriver.exe");
-        }
-        if (PlatformUtil.isLinux()) {
-            System.setProperty("webdriver.chrome.driver", "chromedriver_linux");
-        }
-    }
+	@AfterTest
+	public void teatDown() {
+
+		// close the browser
+		driver.quit();
+
+	}
+
+	private void waitFor(int durationInMilliSeconds) {
+		try {
+			Thread.sleep(durationInMilliSeconds);
+		} catch (InterruptedException e) {
+			e.printStackTrace(); // To change body of catch statement use File | Settings | File Templates.
+		}
+	}
 
 }
